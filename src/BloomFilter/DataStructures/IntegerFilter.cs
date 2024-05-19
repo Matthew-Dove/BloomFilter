@@ -1,7 +1,7 @@
 ﻿namespace BloomFilter.DataStructures;
 
 /// <summary>
-/// Bloom Filter: Add items to this filter, then query the filter later to see of the item was (potentially) previously added.
+/// Bloom Filter: Add items to this filter, then query the filter later to see if the item was (potentially) previously added.
 /// <para>Once created the filter cannot be resized. Once an item is added it cannot be removed.</para>
 /// <para>This is different from a dictionary, because you cannot get the values of an item back, they aren't stored.</para>
 /// <para>This makes the filter very memory efficient, it only uses a few bytes to store any object, and those bytes are shared.</para>
