@@ -1,9 +1,11 @@
 # Bloom Filter
 
-A **Bloom Filter** is a space efficient, probabilistic data structure.  
-Storing a value as only several bits - after running it though several hashing algorithms.
+[PM> NuGet\Install-Package md.bloomfilter](https://www.nuget.org/packages/md.bloomfilter/)  
 
-![Bloom Filter Data Structure](assets/bloom_filter.png)
+A **Bloom Filter** is a space efficient, probabilistic data structure.  
+Storing a value as only several bits - after running it though several hashing algorithms.  
+
+![Bloom Filter Data Structure](assets/bloom_filter.png)  
 
 Add items to a **Bloom Filter**, then query the filter later to see if the item was (*potentially*) previously added.  
 Once created the filter cannot be resized, once an item is added it cannot be removed.  
