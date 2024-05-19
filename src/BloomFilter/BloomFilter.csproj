@@ -3,6 +3,49 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latestMajor</LangVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageOutputPath>..//../nupkg</PackageOutputPath>
+    <PackageReleaseNotes>Added Bloom Filter implementations for integer, and string types.</PackageReleaseNotes>
+    <PackageTags>Bloom Filter;Data Structures</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Matthew-Dove/BloomFilter</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Matthew-Dove/BloomFilter</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>dove.png</PackageIcon>
+    <Copyright>Matthew Dove. All rights reserved.</Copyright>
+    <Description>A Bloom Filter is a space efficient, probabilistic data structure.
+Storing a value as only several bits - after running it though several hashing algorithms.
+
+Once created the filter cannot be resized, once an item is added it cannot be removed.
+The filter very memory efficient, it only uses a few bytes to store an object; and those bytes are shared.
+The filter can tell you with 99% accuracy if an item was previously added (i.e. it has a 1% false positive rate).
+
+A Bloom Filter can tell you if an item is definitely not in the filter, and with 99% certainty, tell you if it has seen the item before.
+It can't be 100% certain - as hash functions have collisions (i.e. two different values with the same hash).
+Use a filter over an expensive resource to check if it's likey there or not.
+For example as a blacklist, on a match you go to a database to make sure the item is actually blacklisted.</Description>
+    <Authors>Matthew Dove</Authors>
+    <Version>1.0.0</Version>
+    <Title>Bloom Filter</Title>
+    <PackageId>md.bloomfilter</PackageId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\dove.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
