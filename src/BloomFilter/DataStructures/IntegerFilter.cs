@@ -15,6 +15,7 @@ public sealed class IntegerFilter : AbstractBloomFilter<int>
 
     /// <summary>Creates a bloom filter for integers with sensible defaults.</summary>
     /// <param name="items">An array of items to create the filter with, you can add items later, provided the capacity is set greather than the array's length.</param>
+    /// <param name="capacity">The expected number of items to be added to the filter. This number must be greater than (or equal to) the items added, or every test will be a false positive. Capacity must be greater than zero.</param>
     public IntegerFilter(int[] items, int capacity) : base(items, capacity) { }
 
     /// <summary>Creates a bloom filter for integers with sensible defaults.</summary>

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System;
+using BloomFilter.Internal;
 
 namespace BloomFilter.DataStructures;
 
@@ -12,15 +13,16 @@ namespace BloomFilter.DataStructures;
 /// </summary>
 public abstract class AbstractBloomFilter<T> : IReadonlyFilter<T>
 {
+    /// <summary>The number of hash functions to run each new item though, calculating their positions in the bit array.</summary>
     private readonly int _hashFunctions = 0;
+    /// <summary>The results from each hash function, that an added item potentially matches (true, or false for each index).</summary>
     private readonly BitArray _hashBits = null;
 
     /// <summary>Creates a bloom filter for generic elements with sensible defaults.</summary>
     /// <param name="items">An array of items to create the filter with, you shouldn't add any items later, as the capacity is set to the array's length.</param>
     public AbstractBloomFilter(T[] items) : this(items.Length)
     {
-        if (items == null)
-            throw new ArgumentNullException(nameof(items));
+        if (items == null) Throw.ArgumentNullException(nameof(items));
 
         for (int i = 0; i < items.Length; i++)
         {
@@ -30,12 +32,11 @@ public abstract class AbstractBloomFilter<T> : IReadonlyFilter<T>
 
     /// <summary>Creates a bloom filter for strings with sensible defaults.</summary>
     /// <param name="items">An array of items to create the filter with, you can add items later, provided the capacity is set greather than the array's length.</param>
+    /// <param name="capacity">The expected number of items to be added to the filter. This number must be greater than (or equal to) the items added, or every test will be a false positive. Capacity must be greater than zero.</param>
     public AbstractBloomFilter(T[] items, int capacity) : this(capacity)
     {
-        if (items == null)
-            throw new ArgumentNullException(nameof(items));
-        if (capacity < items.Length)
-            throw new ArgumentOutOfRangeException(nameof(capacity), capacity, $"{nameof(capacity)} must be greater than or equal to {nameof(items)} length.");
+        if (items == null) Throw.ArgumentNullException(nameof(items));
+        if (capacity < items.Length) Throw.ArgumentOutOfRangeException(nameof(capacity), capacity, $"{nameof(capacity)} must be greater than or equal to {nameof(items)} length.");
 
         for (int i = 0; i < items.Length; i++)
         {
@@ -47,8 +48,7 @@ public abstract class AbstractBloomFilter<T> : IReadonlyFilter<T>
     /// <param name="capacity">The expected number of items to be added to the filter. This number must be greater than (or equal to) the items added, or every test will be a false positive. Capacity must be greater than zero.</param>
     public AbstractBloomFilter(int capacity)
     {
-        if (capacity < 1)
-            throw new ArgumentOutOfRangeException(nameof(capacity), capacity, $"{nameof(capacity)} must be greater than zero.");
+        if (capacity < 1) Throw.ArgumentOutOfRangeException(nameof(capacity), capacity, $"{nameof(capacity)} must be greater than zero.");
 
         capacity = capacity + 1;
         var errorRate = GetErrorRate(capacity);
@@ -72,7 +72,7 @@ public abstract class AbstractBloomFilter<T> : IReadonlyFilter<T>
 
         for (var i = 0; i < _hashFunctions; i++)
         {
-            var hash = ComputeHash(primaryHash, secondaryHash, i);
+            var hash = ComputeHash(primaryHash, secondaryHash, i, _hashBits.Count);
             _hashBits[hash] = true;
         }
     }
@@ -88,7 +88,7 @@ public abstract class AbstractBloomFilter<T> : IReadonlyFilter<T>
 
         for (var i = 0; i < _hashFunctions; i++)
         {
-            var hash = ComputeHash(primaryHash, secondaryHash, i);
+            var hash = ComputeHash(primaryHash, secondaryHash, i, _hashBits.Count);
             if (_hashBits[hash] == false)
             {
                 result = false;
@@ -103,8 +103,9 @@ public abstract class AbstractBloomFilter<T> : IReadonlyFilter<T>
     /// <param name="primaryHash">The result from the first hash function.</param>
     /// <param name="secondaryHash">The result from the second hash function.</param>
     /// <param name="i">The current iteration of the bit flipping loop.</param>
+    /// <param name="numHashBits">The number of bits in the resuting hash array.</param>
     /// <returns>A bit to check or flip in the bit vector.</returns>
-    private int ComputeHash(int primaryHash, int secondaryHash, int i) => Math.Abs((primaryHash + (i * secondaryHash)) % _hashBits.Count);
+    private static int ComputeHash(int primaryHash, int secondaryHash, int i, int numHashBits) => Math.Abs((primaryHash + (i * secondaryHash)) % numHashBits);
 
     /// <summary>Computes the number of bits to use in a vector (flipping flags).</summary>
     private static int GetM(int capacity, double errorRate) => (int)Math.Ceiling(capacity * Math.Log(errorRate, 1.0D / Math.Pow(2.0D, Math.Log(2.0D))));
@@ -127,7 +128,7 @@ public abstract class AbstractBloomFilter<T> : IReadonlyFilter<T>
         return c;
     }
 
-    /// <summary>Hashes a type to an int.</summary>
+    /// <summary>Hashes a given type to an int, in a uniform distribution.</summary>
     /// <param name="input">The element to hash.</param>
     /// <returns>The hashed result.</returns>
     protected abstract int Hash(T input);
