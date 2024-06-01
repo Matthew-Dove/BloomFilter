@@ -90,3 +90,8 @@ var readonlyFilter = filter.Readonly();
 ## 1.0.0
 
 * Added **Bloom Filter** implementations for `integer`, and `string` types (*i.e. their hash functions*).
+
+## 1.0.1
+
+* Moved exceptions into their own class for performance.
+* Added some missing XML comments on the types.

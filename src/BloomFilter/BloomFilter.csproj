@@ -8,7 +8,8 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageOutputPath>..//../nupkg</PackageOutputPath>
-    <PackageReleaseNotes>Added Bloom Filter implementations for integer, and string types.</PackageReleaseNotes>
+    <PackageReleaseNotes>Moved exceptions into their own class for performance.
+Added some missing XML comments on the types.</PackageReleaseNotes>
     <PackageTags>Bloom Filter;Data Structures</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Matthew-Dove/BloomFilter</RepositoryUrl>
@@ -28,7 +29,7 @@ It can't be 100% certain - as hash functions have collisions (i.e. two different
 Use a filter over an expensive resource to check if it's likey there or not.
 For example as a blacklist, on a match you go to a database to make sure the item is actually blacklisted.</Description>
     <Authors>Matthew Dove</Authors>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Title>Bloom Filter</Title>
     <PackageId>md.bloomfilter</PackageId>
   </PropertyGroup>
